@@ -9,6 +9,28 @@ const Routes = () => {
         <Route exact path="/">
           home page
         </Route>
+        <Route exact path="/study">
+          study page
+        </Route>
+        <Route exact path="/search">
+          search
+        </Route>
+        <Route exact path="/login">
+          login page
+        </Route>
+        <Route exact path="/signup">
+          signup
+        </Route>
+        <Route exact path="/stats">
+          stats
+        </Route>
+        <Route exact path="/account">
+          account
+        </Route>
+        <Route exact path="/*">
+          {/* 404 page */}
+          no match page
+        </Route>
       </Switch>
     </Router>
   );
