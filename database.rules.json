@@ -1,7 +1,29 @@
 {
-  /* Visit https://firebase.google.com/docs/database/security to learn more about security rules. */
   "rules": {
-    ".read": false,
-    ".write": false
+    "users": {
+      "$uid": {
+        "words": {
+          ".read": "auth != null && $uid === auth.uid",
+          "$word": {
+            "amount": {
+              ".write": "auth.uid === 'functions-service-worker'",
+              ".validate": "newData.isNumber()"
+            },
+            "date": {
+              ".write": "auth != null && $uid === auth.uid",
+              ".validate": "newData.isString()"
+            },
+            "$other": { ".validate": false }
+          }
+        },
+        "$other": { ".validate": false }
+      }
+    },
+    "words": {
+      ".write": "auth.uid === 'functions-service-worker'",
+      ".read": "auth != null",
+      "definition": { ".validate": "newData.isString()" }
+    },
+    "$other": { ".validate": false }
   }
 }
