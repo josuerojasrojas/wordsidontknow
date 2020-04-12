@@ -11,7 +11,7 @@ const Routes = () => {
     <Router>
       <Switch>
         <Route exact path="/">
-          home page
+          home page test
         </Route>
         <ProtectedRoute
           isAuthenticated={user.isAuthenticated}
