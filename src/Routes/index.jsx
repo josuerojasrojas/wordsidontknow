@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import ProtectedRoute from "components/ProtectedRoute";
 import { redirectTo } from "constants/index";
+import { UserContext } from "components/UserContext";
 
 // all routes go here
 const Routes = () => {
-  const isAuthenticated = true;
+  const { user } = useContext(UserContext);
   return (
     <Router>
       <Switch>
@@ -13,7 +14,7 @@ const Routes = () => {
           home page
         </Route>
         <ProtectedRoute
-          isAuthenticated={isAuthenticated}
+          isAuthenticated={user.isAuthenticated}
           redirectTo={redirectTo}
           exact
           path="/study"
@@ -21,7 +22,7 @@ const Routes = () => {
           Study Success!!!
         </ProtectedRoute>
         <ProtectedRoute
-          isAuthenticated={isAuthenticated}
+          isAuthenticated={user.isAuthenticated}
           redirectTo={redirectTo}
           exact
           path="/search"
@@ -35,7 +36,7 @@ const Routes = () => {
           signup
         </Route>
         <ProtectedRoute
-          isAuthenticated={isAuthenticated}
+          isAuthenticated={user.isAuthenticated}
           redirectTo={redirectTo}
           exact
           path="/stats"
@@ -43,7 +44,7 @@ const Routes = () => {
           Stats Success!!!
         </ProtectedRoute>
         <ProtectedRoute
-          isAuthenticated={isAuthenticated}
+          isAuthenticated={user.isAuthenticated}
           redirectTo={redirectTo}
           exact
           path="/account"
