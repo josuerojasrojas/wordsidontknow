@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^7.1.2",
     "classnames": "^2.2.6",
     "firebase": "^7.14.0",
+    "firebase-tools": "^8.0.2",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -22,7 +23,7 @@
     "predeploy": "yarn run build",
     "deploy:functions": "firebase deploy --only functions",
     "deploy:rules": "firebase deploy --only database",
-    "deploy:hostin": "firebase deploy ---only hosting",
+    "deploy:hosting": "firebase deploy ---only hosting",
     "deploy": "firebase deploy"
   },
   "eslintConfig": {
@@ -40,7 +41,5 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "firebase-tools": "^8.0.2"
-  }
+  "devDependencies": {}
 }
