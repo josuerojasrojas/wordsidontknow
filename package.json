@@ -22,7 +22,7 @@
     "predeploy": "npm run build",
     "deploy:functions": "firebase deploy --only functions",
     "deploy:rules": "firebase deploy --only database",
-    "deploy": "npmx firebase deploy"
+    "deploy": "npm firebase deploy"
   },
   "eslintConfig": {
     "extends": "react-app"
