@@ -20,7 +20,7 @@
       }
     },
     "words": {
-      ".write": "auth.uid === 'functions-service-worker'",
+      ".write": "auth != null",
       ".read": "auth != null",
       "definition": { ".validate": "newData.isString()" }
     },
