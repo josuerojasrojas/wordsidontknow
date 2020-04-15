@@ -9,7 +9,7 @@ const ProtectedRoute = ({ children, isAuthenticated, redirectTo, ...rest }) => {
         isAuthenticated ? (
           children
         ) : (
-          <Redirect from={location} to={redirectTo} />
+          <Redirect from={location.path + location.search} to={redirectTo} />
         )
       }
     />

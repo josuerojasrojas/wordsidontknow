@@ -2,12 +2,19 @@ import React from "react";
 import classNames from "classnames";
 import styles from "./styles.module.css";
 
-const TextInput = ({ name, value, onChange, className, ...otherProps }) => {
+const TextInput = ({
+  className,
+  name,
+  onChange,
+  type,
+  value,
+  ...otherProps
+}) => {
   return (
     <label className={classNames(className, styles.input)} htmlFor={name}>
       {name}
       <input
-        type="text"
+        type={type}
         name={name}
         value={value}
         onChange={onChange}
@@ -15,6 +22,10 @@ const TextInput = ({ name, value, onChange, className, ...otherProps }) => {
       />
     </label>
   );
+};
+
+TextInput.defaultProps = {
+  type: "text",
 };
 
 export default TextInput;

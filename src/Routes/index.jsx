@@ -9,6 +9,9 @@ import Login from "Routes/Login";
 // all routes go here
 const Routes = () => {
   const { user } = useContext(UserContext);
+  const isAuthenticated = !!user;
+  // TODO: should return loading or something while the user is setup
+  if (!user.isUserReady) return "";
   return (
     <Router>
       <Switch>
@@ -16,7 +19,7 @@ const Routes = () => {
           <HomePage />
         </Route>
         <ProtectedRoute
-          isAuthenticated={user.isAuthenticated}
+          isAuthenticated={isAuthenticated}
           redirectTo={redirectTo}
           exact
           path="/study"
@@ -24,7 +27,7 @@ const Routes = () => {
           Study Success!!!
         </ProtectedRoute>
         <ProtectedRoute
-          isAuthenticated={user.isAuthenticated}
+          isAuthenticated={isAuthenticated}
           redirectTo={redirectTo}
           exact
           path="/search"
@@ -38,7 +41,7 @@ const Routes = () => {
           signup
         </Route>
         <ProtectedRoute
-          isAuthenticated={user.isAuthenticated}
+          isAuthenticated={isAuthenticated}
           redirectTo={redirectTo}
           exact
           path="/stats"
@@ -46,7 +49,7 @@ const Routes = () => {
           Stats Success!!!
         </ProtectedRoute>
         <ProtectedRoute
-          isAuthenticated={user.isAuthenticated}
+          isAuthenticated={isAuthenticated}
           redirectTo={redirectTo}
           exact
           path="/account"
