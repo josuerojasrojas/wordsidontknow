@@ -1,0 +1,37 @@
+.input {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  text-align: left;
+}
+
+.input input {
+  background-color: var(--dark);
+  border: none;
+  border-bottom: 2px solid var(--dark-gray);
+  color: var(--white);
+  font-size: 16px;
+  margin-top: 10px;
+  padding: 10px;
+}
+
+.input input:focus {
+  outline: none;
+  outline-offset: 0;
+}
+
+.input::after {
+  background-color: var(--white);
+  bottom: 0;
+  content: "";
+  height: 2px;
+  margin-left: 50%;
+  position: absolute;
+  transition: margin 300ms, width 300ms;
+  width: 0;
+}
+
+.input:focus-within::after {
+  margin-left: 0;
+  width: 100%;
+}
