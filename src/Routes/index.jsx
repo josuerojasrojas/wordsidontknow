@@ -4,6 +4,7 @@ import ProtectedRoute from "components/ProtectedRoute";
 import HomePage from "./HomePage";
 import { redirectTo } from "constants/index";
 import { UserContext } from "components/UserContext";
+import Login from "Routes/Login";
 
 // all routes go here
 const Routes = () => {
@@ -31,7 +32,7 @@ const Routes = () => {
           Search Success!!!
         </ProtectedRoute>
         <Route exact path={redirectTo}>
-          login page
+          <Login />
         </Route>
         <Route exact path="/signup">
           signup
