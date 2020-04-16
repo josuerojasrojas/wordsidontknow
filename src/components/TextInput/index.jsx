@@ -1,6 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 import styles from "./styles.module.css";
+import PropTypes from "prop-types";
 
 const TextInput = ({
   className,
@@ -26,6 +27,14 @@ const TextInput = ({
 
 TextInput.defaultProps = {
   type: "text",
+};
+
+TextInput.propTypes = {
+  className: PropTypes.string,
+  name: PropTypes.string,
+  onChange: PropTypes.func,
+  type: PropTypes.string,
+  value: PropTypes.string,
 };
 
 export default TextInput;
