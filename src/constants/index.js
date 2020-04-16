@@ -9,3 +9,9 @@ export const DICTIONARY_API = (word) =>
 // firebase 'endpoint'
 export const FIREBASE_ALL_WORDS = "/words";
 export const FIREBASE_USER_WORDS = (uid) => `${uid}/words`;
+
+// user context
+export const USER_CONTEXT_INIT = {
+  isAuthenticated: false,
+  isUserReady: false,
+};
