@@ -9,7 +9,7 @@ import Login from "Routes/Login";
 // all routes go here
 const Routes = () => {
   const { user } = useContext(UserContext);
-  const isAuthenticated = !!user;
+  const { isAuthenticated } = user;
   // TODO: should return loading or something while the user is setup
   if (!user.isUserReady) return "";
   return (

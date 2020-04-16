@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { auth } from "_firebase.js";
+import { USER_CONTEXT_INIT } from "constants/index";
 
 const userContextInit = {
   user: null,
@@ -9,13 +10,15 @@ const userContextInit = {
 export const UserContext = React.createContext({ ...userContextInit });
 
 const UserContextProvider = ({ children }) => {
-  const [user, setUser] = useState({ isUserReady: false });
+  const [user, setUser] = useState({ ...USER_CONTEXT_INIT });
 
   useEffect(() => {
+    // it may seem repetetive to have a onchange function
     auth.onAuthStateChanged((_user) => {
       if (_user) {
         setUser({
           displayName: _user.displayName,
+          isAuthenticated: true,
           isUserReady: true,
           email: _user.email,
           emailVerified: _user.emailVerified,
@@ -23,9 +26,7 @@ const UserContextProvider = ({ children }) => {
           uid: _user.uid,
         });
       } else {
-        setUser({
-          isUserReady: true,
-        });
+        setUser({ ...USER_CONTEXT_INIT, isUserReady: true });
       }
     });
   }, []);

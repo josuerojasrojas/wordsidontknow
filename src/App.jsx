@@ -6,12 +6,12 @@ import Header from "components/Header";
 
 function App() {
   return (
-    <div className={styles.App}>
-      <UserContextProvider>
+    <UserContextProvider>
+      <div className={styles.App}>
         <Header />
         <Routes />
-      </UserContextProvider>
-    </div>
+      </div>
+    </UserContextProvider>
   );
 }
 

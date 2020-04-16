@@ -3,6 +3,7 @@ import TextInput from "components/TextInput";
 import Button from "components/Button";
 import { UserContext } from "components/UserContext";
 import { auth } from "_firebase.js";
+import LogOutButton from "components/LogoutButton";
 
 const Login = () => {
   const [userLogin, setUserLogin] = useState({ email: "", password: "" });
@@ -26,6 +27,8 @@ const Login = () => {
         .catch(console.log);
     }
   };
+
+  if (user.isAuthenticated) return <LogOutButton />;
 
   return (
     <div>
