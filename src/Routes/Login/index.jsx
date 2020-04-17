@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 const Login = () => {
   const [userLogin, setUserLogin] = useState({ email: "", password: "" });
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(" ");
+  const [errorMessage, setErrorMessage] = useState("");
   const { user, setUser } = useContext(UserContext);
 
   const onSubmit = () => {

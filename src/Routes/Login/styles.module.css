@@ -1,6 +1,6 @@
 .cardTitle {
-  text-align: left;
   margin-bottom: 15px;
+  text-align: left;
 }
 
 .formWrapper {
@@ -12,8 +12,8 @@
 }
 
 .submitButton {
-  margin-top: 35px;
   margin-bottom: 5px;
+  margin-top: 35px;
 }
 
 .errorMessage {

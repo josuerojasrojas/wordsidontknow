@@ -4,11 +4,14 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 import Logo from "components/Logo";
 import logoSrc from "assets/circle.svg";
+import { Link } from "react-router-dom";
 
 const Header = ({ className }) => {
   return (
     <div className={classNames(className, styles.header)}>
-      <Logo imageSrc={logoSrc} />
+      <Link to="/">
+        <Logo imageSrc={logoSrc} />
+      </Link>
     </div>
   );
 };

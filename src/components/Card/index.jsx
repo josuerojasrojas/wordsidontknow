@@ -11,6 +11,7 @@ const Card = ({ children, className, ...restProps }) => (
 
 Card.propTypes = {
   children: PropTypes.node,
+  className: PropTypes.string,
 };
 
 export default Card;
