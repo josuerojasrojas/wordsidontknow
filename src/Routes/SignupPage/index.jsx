@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState, useContext } from "react";
 import TextInput from "components/TextInput";
 import Button from "components/Button";
 import Card from "components/Card";
@@ -8,32 +8,35 @@ import LogOutButton from "components/LogoutButton";
 import styles from "./styles.module.css";
 import { Link } from "react-router-dom";
 
-const Login = () => {
-  const [userLogin, setUserLogin] = useState({ email: "", password: "" });
+const SignupPage = () => {
+  const [userLogin, setUserLogin] = useState({
+    email: "",
+    password: "",
+    rePassword: "",
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const { user, setUser } = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   const onSubmit = () => {
     setIsLoading(true);
-    if (userLogin.email.length && userLogin.password.length) {
+    if (userLogin.password !== userLogin.rePassword) {
+      setErrorMessage("Passwords don't match.");
+      setIsLoading(false);
+    } else if (
+      userLogin.email.length &&
+      userLogin.password.length &&
+      userLogin.password === userLogin.rePassword
+    ) {
       auth
-        .signInWithEmailAndPassword(userLogin.email, userLogin.password)
-        .then((_user) => {
-          setUser({
-            displayName: _user.displayName,
-            email: _user.email,
-            emailVerified: _user.emailVerified,
-            photoURL: _user.photoURL,
-            uid: _user.uid,
-            ...user,
-          });
-          setIsLoading(false);
-        })
+        .createUserWithEmailAndPassword(userLogin.email, userLogin.password)
         .catch((e) => {
           setErrorMessage(e.message);
           setIsLoading(false);
         });
+    } else {
+      setErrorMessage("Something went Wrong.");
+      setIsLoading(false);
     }
   };
 
@@ -41,12 +44,17 @@ const Login = () => {
 
   // TODO: should update with regex for email and password
   const isButtonDisabled =
-    isLoading || !(userLogin.email.length && userLogin.password.length);
+    isLoading ||
+    !(
+      userLogin.email.length &&
+      userLogin.password.length &&
+      userLogin.rePassword.length
+    );
 
   return (
     <div>
       <Card>
-        <h3 className={styles.cardTitle}>Sign In</h3>
+        <h3 className={styles.cardTitle}>Create a New Account</h3>
         <div className={styles.formWrapper}>
           <TextInput
             onChange={(e) =>
@@ -57,22 +65,34 @@ const Login = () => {
             value={user.email}
           />
           <TextInput
+            autoComplete="off"
             onChange={(e) =>
               setUserLogin({ ...userLogin, password: e.target.value })
             }
             placeholder="Password"
+            required
             type="password"
             value={user.password}
+          />
+          <TextInput
+            autoComplete="off"
+            onChange={(e) =>
+              setUserLogin({ ...userLogin, rePassword: e.target.value })
+            }
+            placeholder="Re-Enter Password"
+            required
+            type="password"
+            value={user.rePassword}
           />
           <Button
             className={styles.submitButton}
             onClick={onSubmit}
-            text={"Sign In"}
+            text={"Sign Up"}
             isDisabled={isButtonDisabled}
           />
           <div className={styles.errorMessage}>{errorMessage}</div>
           <div>
-            Don't Have one? <Link to="/signup">Create a new one</Link>
+            Already have an account? <Link to="/login">Login Here</Link>
           </div>
         </div>
       </Card>
@@ -80,4 +100,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignupPage;
