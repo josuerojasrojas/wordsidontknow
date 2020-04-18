@@ -19,3 +19,11 @@
 .infoText {
   margin-bottom: 30px;
 }
+
+.buttons {
+  display: flex;
+}
+
+.buttons > div:first-child {
+  margin-right: 20px;
+}

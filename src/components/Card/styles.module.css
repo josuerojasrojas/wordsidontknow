@@ -1,0 +1,9 @@
+.card {
+  background-color: var(--dark-purple);
+  border-radius: 20px;
+  margin: auto;
+  max-width: 325px;
+  min-width: 250px;
+  padding: 20px;
+  width: 100%;
+}

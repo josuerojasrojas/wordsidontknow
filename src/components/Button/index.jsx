@@ -12,6 +12,7 @@ const Button = ({ altStyle, className, isDisabled, onClick, text }) => {
     <div
       className={classNames(className, styles.button, {
         [styles.altStyle]: altStyle,
+        [styles.disabled]: isDisabled,
       })}
       onClick={_onClick}
     >

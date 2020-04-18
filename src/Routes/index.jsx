@@ -5,6 +5,8 @@ import HomePage from "./HomePage";
 import { redirectTo } from "constants/index";
 import { UserContext } from "components/UserContext";
 import Login from "Routes/Login";
+import SignupPage from "Routes/SignupPage";
+import Header from "components/Header";
 
 // all routes go here
 const Routes = () => {
@@ -14,6 +16,7 @@ const Routes = () => {
   if (!user.isUserReady) return "";
   return (
     <Router>
+      <Header />
       <Switch>
         <Route exact path="/">
           <HomePage />
@@ -38,7 +41,7 @@ const Routes = () => {
           <Login />
         </Route>
         <Route exact path="/signup">
-          signup
+          <SignupPage />
         </Route>
         <ProtectedRoute
           isAuthenticated={isAuthenticated}
