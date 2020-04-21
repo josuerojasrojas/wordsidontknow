@@ -1,0 +1,44 @@
+.backFlip {
+  transform: rotateX(-180deg);
+}
+
+.card {
+  transition: transform 300ms;
+}
+
+.frontContent {
+  animation: frontHideAndSee 300ms;
+}
+
+.backContent {
+  animation: backHideAndSee 300ms;
+  transform: rotateX(-180deg);
+}
+
+@keyframes frontHideAndSee {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes backHideAndSee {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
