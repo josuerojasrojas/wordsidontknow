@@ -1,11 +1,12 @@
 import React, { useContext } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import ProtectedRoute from "components/ProtectedRoute";
-import HomePage from "./HomePage";
 import { redirectTo } from "constants/index";
 import { UserContext } from "components/UserContext";
-import Login from "Routes/Login";
+import HomePage from "./HomePage";
 import SignupPage from "Routes/SignupPage";
+import Login from "Routes/Login";
+import SearchPage from "Routes/SearchPage";
 import Header from "components/Header";
 import StudyPage from "Routes/StudyPage";
 
@@ -36,7 +37,7 @@ const Routes = () => {
           exact
           path="/search"
         >
-          Search Success!!!
+          <SearchPage />
         </ProtectedRoute>
         <Route exact path={redirectTo}>
           <Login />
