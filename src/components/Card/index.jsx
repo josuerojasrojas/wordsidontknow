@@ -4,7 +4,7 @@ import classNames from "classnames";
 import styles from "./styles.module.css";
 
 const Card = ({ children, className, ...restProps }) => (
-  <div className={classNames(classNames, styles.card)} {...restProps}>
+  <div className={classNames(className, styles.card)} {...restProps}>
     {children}
   </div>
 );

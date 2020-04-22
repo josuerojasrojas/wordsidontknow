@@ -7,6 +7,7 @@ import { UserContext } from "components/UserContext";
 import Login from "Routes/Login";
 import SignupPage from "Routes/SignupPage";
 import Header from "components/Header";
+import StudyPage from "Routes/StudyPage";
 
 // all routes go here
 const Routes = () => {
@@ -27,7 +28,7 @@ const Routes = () => {
           exact
           path="/study"
         >
-          Study Success!!!
+          <StudyPage />
         </ProtectedRoute>
         <ProtectedRoute
           isAuthenticated={isAuthenticated}
