@@ -11,7 +11,6 @@ const TextInput = ({
   value,
   ...otherProps
 }) => {
-  console.log("classname", className);
   return (
     <label className={classNames(className, styles.input)} htmlFor={name}>
       {name}
