@@ -10,7 +10,7 @@ const Init_Search_Description_Text =
   "Search for definitions and save them to study later";
 const NO_RESULTS = "No results found, try making sure spelling is correct";
 
-async function getDefinitions(value) {
+async function getDefinitions(value, setState, setTimerState) {
   const results = await fetch(DICTIONARY_API(value));
   const reqResults = await results.json();
   let defs = null;
@@ -23,8 +23,10 @@ async function getDefinitions(value) {
       closeWords: reqResults,
     };
   }
-  console.log("Get definitions", defs);
-  return defs;
+  setTimerState(null);
+  return setState(defs);
+  //   console.log("Get definitions", defs);
+  //   return defs;
 }
 
 // random data
@@ -60,9 +62,7 @@ const WordSearchInput = () => {
     if (value.length) {
       setTimerState(
         setTimeout(() => {
-          const definitions = getDefinitions(value);
-          setSearchResults(definitions);
-          setTimerState(null);
+          getDefinitions(value, setSearchResults, setTimerState);
         }, 100)
       );
     } else {
