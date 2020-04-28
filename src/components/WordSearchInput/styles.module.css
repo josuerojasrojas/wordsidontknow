@@ -5,3 +5,43 @@
 .results {
   text-align: left;
 }
+
+.text {
+  margin-bottom: 10px;
+}
+
+.definition {
+  line-height: 1.15rem;
+  margin-bottom: 7px;
+}
+
+.otherWords {
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 5px;
+  padding: 5px 0 5px 10px;
+  transition: background-color 100ms;
+}
+
+.otherWords:hover {
+  background-color: var(--purple);
+}
+
+.otherWords:last-child {
+  margin-bottom: 0;
+}
+
+.addNew {
+  border-radius: 5px;
+  color: var(--green-ours);
+  cursor: pointer;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  padding: 5px 0 5px 10px;
+  transition: color 100ms;
+}
+
+.addNew:hover {
+  background-color: var(--purple);
+  color: var(--light-green-ours);
+}

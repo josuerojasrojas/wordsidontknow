@@ -1,14 +1,30 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import classNames from "classnames";
 import TextInput from "components/TextInput";
 import styles from "./styles.module.css";
 import Card from "components/Card";
-import { DICTIONARY_API } from "constants/index";
+import {
+  CLOSE_WORDS_RESULTS,
+  DEFINITION_RESULTS,
+  DICTIONARY_API,
+  Init_Search_Description_Text,
+  IS_SEARCHING_TEXT,
+  NO_RESULTS,
+} from "constants/index";
 
-const Init_Search_Description_Text =
-  "Search for definitions and save them to study later";
-const NO_RESULTS = "No results found, try making sure spelling is correct";
+const CloseWord = ({ onClick, value }) => {
+  const _onClick = () => onClick(value);
+  return (
+    <div onClick={_onClick} className={styles.otherWords}>
+      {value}
+    </div>
+  );
+};
+
+CloseWord.propTypes = {
+  onClick: PropTypes.func,
+  value: PropTypes.string,
+};
 
 async function getDefinitions(value, setState, setTimerState) {
   const results = await fetch(DICTIONARY_API(value));
@@ -25,12 +41,11 @@ async function getDefinitions(value, setState, setTimerState) {
   }
   setTimerState(null);
   return setState(defs);
-  //   console.log("Get definitions", defs);
-  //   return defs;
 }
 
 // random data
-// const getDefinitions = (value) => {
+// gonna leave this here cause it might be useful if we run out of data from api
+// const getDefinitions = (value, setState, setTimerState) => {
 //   const hasResult = Math.random();
 //   let defs = null;
 //   if (hasResult < 0.3) {
@@ -45,7 +60,8 @@ async function getDefinitions(value, setState, setTimerState) {
 //       ],
 //     };
 //   }
-//   return defs;
+//   setTimerState(null);
+//   return setState(defs);
 // };
 
 const WordSearchInput = () => {
@@ -55,7 +71,7 @@ const WordSearchInput = () => {
   const [timerState, setTimerState] = useState(null);
 
   const onChange = (e) => {
-    const value = e.target.value;
+    const value = typeof e === "string" ? e : e.target.value;
     setSearchValue(value);
     clearTimeout(timerState);
     setTimerState(null);
@@ -63,46 +79,52 @@ const WordSearchInput = () => {
       setTimerState(
         setTimeout(() => {
           getDefinitions(value, setSearchResults, setTimerState);
-        }, 100)
+        }, 300)
       );
     } else {
       setSearchResults(null);
     }
   };
 
+  const addToList = () => {
+    //   TODO:
+    console.log(
+      `should add ${searchValue}: ${searchResults.definitions} to list`
+    );
+  };
+
   const getText = (searchValue, searchResult) => {
-    switch (!!searchValue.length + !!searchResult) {
-      case 0:
-        return Init_Search_Description_Text;
-      case 1:
-        return NO_RESULTS;
-      default:
-        return "";
-    }
+    if (timerState) return IS_SEARCHING_TEXT;
+    else if (!searchValue.length) return Init_Search_Description_Text;
+    else if (!searchResult) return NO_RESULTS;
+    else if (!!searchResults.definitions)
+      return DEFINITION_RESULTS(searchValue);
+    else if (!!searchResults.closeWords)
+      return CLOSE_WORDS_RESULTS(searchValue);
   };
 
   const getResults = (searchResults) => {
-    console.log("searchResults:", searchResults);
     if (searchResults) {
       const resultComponents = [];
-      console.log(searchResults);
       resultComponents.push(
         searchResults.definitions &&
-          searchResults.definitions.map((def) => {
-            return <div className={styles.definition}>{def}</div>;
+          searchResults.definitions.map((def, i) => {
+            return (
+              <div key={i} className={styles.definition}>
+                {def}
+              </div>
+            );
           })
       );
       resultComponents.push(
         searchResults.closeWords &&
           searchResults.closeWords.map((word) => {
-            return <div className={styles.otherWords}>{word}</div>;
+            return <CloseWord key={word} onClick={onChange} value={word} />;
           })
       );
       return resultComponents;
     } else return "";
   };
-
-  const searchText = getText(searchValue, searchResults);
 
   return (
     <div>
@@ -113,8 +135,15 @@ const WordSearchInput = () => {
           placeholder="Search words"
           value={searchValue}
         />
-        <div className={styles.text}>{!timerState && searchText}</div>
-        <div className={styles.results}>{getResults(searchResults)}</div>
+        <div className={styles.text}>{getText(searchValue, searchResults)}</div>
+        <div className={styles.results}>
+          {!timerState && getResults(searchResults)}
+        </div>
+        {!timerState && !!searchResults && !!searchResults.definitions && (
+          <div onClick={addToList} className={styles.addNew}>
+            + Add this to your list
+          </div>
+        )}
       </Card>
     </div>
   );

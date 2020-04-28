@@ -15,3 +15,14 @@ export const USER_CONTEXT_INIT = {
   isAuthenticated: false,
   isUserReady: false,
 };
+
+// wordsearchcomponent
+export const Init_Search_Description_Text =
+  "Search for definitions and save them to study later";
+export const NO_RESULTS =
+  "No results found, try making sure spelling is correct";
+export const CLOSE_WORDS_RESULTS = (searchValue) =>
+  `Did not find the definition for ${searchValue}. Here are some close words: `;
+export const DEFINITION_RESULTS = (searchValue) =>
+  `Definitions for ${searchValue}:`;
+export const IS_SEARCHING_TEXT = "Searching...";
