@@ -32,7 +32,7 @@ async function getDefinitions(value, setState, setTimerState) {
   let defs = null;
   if (reqResults && reqResults[0].shortdef) {
     defs = {
-      definitions: [reqResults[0].shortdef, reqResults[1].shortdef],
+      definitions: [reqResults[0].shortdef],
     };
   } else if (reqResults.length) {
     defs = {
