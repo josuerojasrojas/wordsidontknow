@@ -52,6 +52,7 @@ const Login = () => {
             onChange={(e) =>
               setUserLogin({ ...userLogin, email: e.target.value })
             }
+            onEnter={onSubmit}
             placeholder="Email"
             type="email"
             value={user.email}
@@ -60,6 +61,7 @@ const Login = () => {
             onChange={(e) =>
               setUserLogin({ ...userLogin, password: e.target.value })
             }
+            onEnter={onSubmit}
             placeholder="Password"
             type="password"
             value={user.password}
