@@ -18,16 +18,15 @@ const Login = () => {
     hasError: false,
   });
 
-  const [userLogin, setUserLogin] = useState({ email: "", password: "" });
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const { user, setUser } = useContext(UserContext);
 
   const onSubmit = () => {
     setIsLoading(true);
-    if (emailInput.value.length && userLogin.password.length) {
+    if (emailInput.value.length && passwordInput.value.length) {
       auth
-        .signInWithEmailAndPassword(emailInput.value, userLogin.password)
+        .signInWithEmailAndPassword(emailInput.value, passwordInput.value)
         .then((_user) => {
           setUser({
             displayName: _user.displayName,
