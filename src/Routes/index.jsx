@@ -1,5 +1,10 @@
 import React, { useContext } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 import ProtectedRoute from "components/ProtectedRoute";
 import { redirectTo } from "constants/index";
 import { UserContext } from "components/UserContext";
@@ -22,7 +27,7 @@ const Routes = () => {
       <Header />
       <Switch>
         <Route exact path="/">
-          <HomePage />
+          {isAuthenticated ? <Redirect to="/search" /> : <HomePage />}
         </Route>
         <ProtectedRoute
           isAuthenticated={isAuthenticated}
