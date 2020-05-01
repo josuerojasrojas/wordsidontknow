@@ -1,32 +1,21 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import React, { useState, useContext } from "react";
+import classNames from "classnames";
 import TextInput from "components/TextInput";
 import styles from "./styles.module.css";
 import Card from "components/Card";
+import CloseWord from "components/CloseWord";
 import {
   CLOSE_WORDS_RESULTS,
   DEFINITION_RESULTS,
   DICTIONARY_API,
   FIREBASE_SINGLE_WORD,
+  FIREBASE_USER_SINGLE_WORD_SET,
   Init_Search_Description_Text,
   IS_SEARCHING_TEXT,
   NO_RESULTS,
 } from "constants/index";
 import { database } from "_firebase";
-
-const CloseWord = ({ onClick, value }) => {
-  const _onClick = () => onClick(value);
-  return (
-    <div onClick={_onClick} className={styles.otherWords}>
-      {value}
-    </div>
-  );
-};
-
-CloseWord.propTypes = {
-  onClick: PropTypes.func,
-  value: PropTypes.string,
-};
+import { UserContext } from "components/UserContext";
 
 async function getDefinitions(value, setState, setTimerState) {
   let defs = null;
@@ -60,25 +49,14 @@ async function getDefinitions(value, setState, setTimerState) {
 // const getDefinitions = async (value, setState, setTimerState) => {
 //   const hasResult = Math.random();
 //   let defs = null;
-
-//   const firebaseWordSnapshot = await database
-//     .ref(FIREBASE_SINGLE_WORD(value))
-//     .once("value");
-//   const firebaseDefinition = firebaseWordSnapshot.val();
-//   if (firebaseDefinition) defs = { definitions: [firebaseDefinition] };
-//   else {
-//     if (hasResult < 0.3) {
-//       defs = {
-//         closeWords: ["ss", "some", "something", "someone"],
-//       };
-//     } else if (hasResult < 0.6) {
-//       defs = {
-//         definitions: [
-//           "some definition one",
-//           "another defintion that is extra long cause definitions are really long sometimes, tyou know what i'm saying or what. hmm. i wonder what is the average length of a definition",
-//         ],
-//       };
-//     }
+//   if (hasResult < 0.3) {
+//     defs = {
+//       closeWords: ["ss", "some", "something", "someone"],
+//     };
+//   } else if (hasResult < 0.6) {
+//     defs = {
+//       definitions: ["some definition one"],
+//     };
 //   }
 //   setTimerState(null);
 //   return setState(defs);
@@ -89,9 +67,12 @@ const WordSearchInput = () => {
   const [searchResults, setSearchResults] = useState(null);
   // timer state acts as a loader, if something is inside it that means it is loading.
   const [timerState, setTimerState] = useState(null);
+  const [isAddWordDisabled, setIsAddWordDisabled] = useState(false);
+  const { user } = useContext(UserContext);
 
   const onChange = (e) => {
     const value = typeof e === "string" ? e : e.target.value;
+    setIsAddWordDisabled(false);
     setSearchValue(value);
     clearTimeout(timerState);
     setTimerState(null);
@@ -107,10 +88,22 @@ const WordSearchInput = () => {
   };
 
   const addToList = () => {
-    //   TODO:
-    console.log(
-      `should add ${searchValue}: ${searchResults.definitions} to list`
-    );
+    if (isAddWordDisabled) return;
+    setIsAddWordDisabled(true);
+    database
+      .ref(FIREBASE_USER_SINGLE_WORD_SET(user.uid, searchValue))
+      .set(Date.now() + "")
+      .then(() => {
+        // TODO: should probably give a success message
+        console.log("success added");
+      })
+      .catch((e) => {
+        // TODO: should probably mention there was an error or something and to try again
+        setIsAddWordDisabled(false);
+        console.error(e);
+      });
+    // TODO: add definition to
+    // /words/$word/definition
   };
 
   const getText = (searchValue, searchResult) => {
@@ -160,7 +153,12 @@ const WordSearchInput = () => {
           {!timerState && getResults(searchResults)}
         </div>
         {!timerState && !!searchResults && !!searchResults.definitions && (
-          <div onClick={addToList} className={styles.addNew}>
+          <div
+            onClick={addToList}
+            className={classNames(styles.addNew, {
+              [styles.disabled]: isAddWordDisabled,
+            })}
+          >
             + Add this to your list
           </div>
         )}

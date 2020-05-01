@@ -1,0 +1,15 @@
+.otherWords {
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 5px;
+  padding: 5px 0 5px 10px;
+  transition: background-color 100ms;
+}
+
+.otherWords:hover {
+  background-color: var(--purple);
+}
+
+.otherWords:last-child {
+  margin-bottom: 0;
+}
