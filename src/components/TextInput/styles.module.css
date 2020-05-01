@@ -35,3 +35,9 @@
   margin-left: 0;
   width: 100%;
 }
+
+.hasError::after {
+  background-color: var(--red-ours);
+  margin-left: 0;
+  width: 100%;
+}
