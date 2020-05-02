@@ -60,6 +60,7 @@ const SignupPage = () => {
             onChange={(e) =>
               setUserLogin({ ...userLogin, email: e.target.value })
             }
+            onEnter={onSubmit}
             placeholder="Email"
             type="email"
             value={user.email}
@@ -69,6 +70,7 @@ const SignupPage = () => {
             onChange={(e) =>
               setUserLogin({ ...userLogin, password: e.target.value })
             }
+            onEnter={onSubmit}
             placeholder="Password"
             required
             type="password"
@@ -79,6 +81,7 @@ const SignupPage = () => {
             onChange={(e) =>
               setUserLogin({ ...userLogin, rePassword: e.target.value })
             }
+            onEnter={onSubmit}
             placeholder="Re-Enter Password"
             required
             type="password"
