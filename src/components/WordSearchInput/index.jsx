@@ -7,10 +7,12 @@ import {
   CLOSE_WORDS_RESULTS,
   DEFINITION_RESULTS,
   DICTIONARY_API,
+  FIREBASE_SINGLE_WORD,
   Init_Search_Description_Text,
   IS_SEARCHING_TEXT,
   NO_RESULTS,
 } from "constants/index";
+import { database } from "_firebase";
 
 const CloseWord = ({ onClick, value }) => {
   const _onClick = () => onClick(value);
@@ -27,17 +29,27 @@ CloseWord.propTypes = {
 };
 
 async function getDefinitions(value, setState, setTimerState) {
-  const results = await fetch(DICTIONARY_API(value));
-  const reqResults = await results.json();
   let defs = null;
-  if (reqResults && reqResults[0].shortdef) {
-    defs = {
-      definitions: [reqResults[0].shortdef],
-    };
-  } else if (reqResults.length) {
-    defs = {
-      closeWords: reqResults,
-    };
+
+  // first try on firebase to get defs
+  const firebaseWordSnapshot = await database
+    .ref(FIREBASE_SINGLE_WORD(value))
+    .once("value");
+  const firebaseDefinition = firebaseWordSnapshot.val();
+  if (firebaseDefinition) defs = { definitions: [firebaseDefinition] };
+  // else if no defs found then fetch from DICTIONARY_API
+  else {
+    const results = await fetch(DICTIONARY_API(value));
+    const reqResults = await results.json();
+    if (reqResults && reqResults[0].shortdef) {
+      defs = {
+        definitions: [reqResults[0].shortdef],
+      };
+    } else if (reqResults.length) {
+      defs = {
+        closeWords: reqResults,
+      };
+    }
   }
   setTimerState(null);
   return setState(defs);
@@ -45,20 +57,28 @@ async function getDefinitions(value, setState, setTimerState) {
 
 // random data
 // gonna leave this here cause it might be useful if we run out of data from api
-// const getDefinitions = (value, setState, setTimerState) => {
+// const getDefinitions = async (value, setState, setTimerState) => {
 //   const hasResult = Math.random();
 //   let defs = null;
-//   if (hasResult < 0.3) {
-//     defs = {
-//       closeWords: ["ss", "some", "something", "someone"],
-//     };
-//   } else if (hasResult < 0.6) {
-//     defs = {
-//       definitions: [
-//         "some definition one",
-//         "another defintion that is extra long cause definitions are really long sometimes, tyou know what i'm saying or what. hmm. i wonder what is the average length of a definition",
-//       ],
-//     };
+
+//   const firebaseWordSnapshot = await database
+//     .ref(FIREBASE_SINGLE_WORD(value))
+//     .once("value");
+//   const firebaseDefinition = firebaseWordSnapshot.val();
+//   if (firebaseDefinition) defs = { definitions: [firebaseDefinition] };
+//   else {
+//     if (hasResult < 0.3) {
+//       defs = {
+//         closeWords: ["ss", "some", "something", "someone"],
+//       };
+//     } else if (hasResult < 0.6) {
+//       defs = {
+//         definitions: [
+//           "some definition one",
+//           "another defintion that is extra long cause definitions are really long sometimes, tyou know what i'm saying or what. hmm. i wonder what is the average length of a definition",
+//         ],
+//       };
+//     }
 //   }
 //   setTimerState(null);
 //   return setState(defs);
