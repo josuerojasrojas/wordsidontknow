@@ -2,10 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "components/UserContext";
 import { database } from "_firebase";
 import { FIREBASE_USER_WORDS } from "constants/index";
+import Table from "components/Table";
 
 const StatsPage = () => {
   const { user } = useContext(UserContext);
-  const [userWords, setUserWords] = useState([]);
+  const [userWords, setUserWords] = useState(null);
 
   useEffect(() => {
     if (user.uid)
@@ -16,9 +17,7 @@ const StatsPage = () => {
         .catch(console.error);
   }, []);
 
-  console.log("words", userWords);
-
-  return "Stats";
+  return <Table data={userWords} />;
 };
 
 export default StatsPage;

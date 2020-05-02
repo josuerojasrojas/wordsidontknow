@@ -1,0 +1,29 @@
+.table {
+  max-width: 450px;
+  overflow: scroll;
+}
+
+.row {
+  border-bottom: 1px solid var(--purple);
+  display: grid;
+  grid-template-columns: repeat(3, 33.333%);
+  padding: 7px 7px;
+  text-align: left;
+}
+
+.row:last-child {
+  border-bottom: 0;
+}
+
+.row.titleRow {
+  font-weight: bold;
+  font-size: 1.15rem;
+  text-transform: uppercase;
+}
+
+.cell {
+  overflow: hidden;
+  padding: 0 3px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
