@@ -3,10 +3,11 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import ProtectedRoute from "components/ProtectedRoute";
 import { redirectTo } from "constants/index";
 import { UserContext } from "components/UserContext";
-import HomePage from "./HomePage";
+import HomePage from "Routes/HomePage";
 import SignupPage from "Routes/SignupPage";
-import Login from "Routes/Login";
 import SearchPage from "Routes/SearchPage";
+import StatsPage from "Routes/StatsPage";
+import Login from "Routes/Login";
 import Header from "components/Header";
 import StudyPage from "Routes/StudyPage";
 
@@ -51,7 +52,7 @@ const Routes = () => {
           exact
           path="/stats"
         >
-          Stats Success!!!
+          <StatsPage />
         </ProtectedRoute>
         <ProtectedRoute
           isAuthenticated={isAuthenticated}
