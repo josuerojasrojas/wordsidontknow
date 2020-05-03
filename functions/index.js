@@ -7,21 +7,7 @@ const db = admin.database();
 
 exports.initWordForUser = functions.database
   .ref("/users/{uid}/words/{word}")
-  .onCreate((snapshot, context) => {
-    const word = snapshot.key;
-    const wordRef = db.ref(`words/${word}`);
-    wordRef
-      .once("value")
-      .then((_wordSnap) => {
-        //  if word doesn't exist then we cache it in our database
-        // TODO: update when added definition api
-        return _wordSnap.exists()
-          ? ""
-          : wordRef.set({ definition: "somedefin" });
-      })
-      .catch((e) => console.log("error", e));
-    return db.ref(snapshot.ref).child("amount").set(1);
-  });
+  .onCreate((snapshot, context) => db.ref(snapshot.ref).child("amount").set(1));
 
 exports.addAmountRepeatedWord = functions.database
   .ref("/users/{uid}/words/{word}/date")
