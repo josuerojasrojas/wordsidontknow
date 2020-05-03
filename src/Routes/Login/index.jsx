@@ -9,16 +9,24 @@ import styles from "./styles.module.css";
 import { Link } from "react-router-dom";
 
 const Login = () => {
-  const [userLogin, setUserLogin] = useState({ email: "", password: "" });
+  const [emailInput, setEmailInput] = useState({
+    value: "",
+    hasError: false,
+  });
+  const [passwordInput, setPasswordInput] = useState({
+    value: "",
+    hasError: false,
+  });
+
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const { user, setUser } = useContext(UserContext);
 
   const onSubmit = () => {
     setIsLoading(true);
-    if (userLogin.email.length && userLogin.password.length) {
+    if (emailInput.value.length && passwordInput.value.length) {
       auth
-        .signInWithEmailAndPassword(userLogin.email, userLogin.password)
+        .signInWithEmailAndPassword(emailInput.value, passwordInput.value)
         .then((_user) => {
           setUser({
             displayName: _user.displayName,
@@ -41,7 +49,11 @@ const Login = () => {
 
   // TODO: should update with regex for email and password
   const isButtonDisabled =
-    isLoading || !(userLogin.email.length && userLogin.password.length);
+    isLoading ||
+    emailInput.hasError ||
+    passwordInput.hasError ||
+    !emailInput.value.length ||
+    !passwordInput.value.length;
 
   return (
     <div>
@@ -50,21 +62,32 @@ const Login = () => {
         <div className={styles.formWrapper}>
           <TextInput
             onChange={(e) =>
-              setUserLogin({ ...userLogin, email: e.target.value })
+              setEmailInput({
+                ...emailInput,
+                value: e.target.value,
+                // TODO: could use regex or something to validate
+                hasError: !e.target.value.length,
+              })
             }
             onEnter={onSubmit}
             placeholder="Email"
             type="email"
-            value={user.email}
+            value={emailInput.value}
+            hasError={emailInput.hasError}
           />
           <TextInput
+            hasError={passwordInput.hasError}
             onChange={(e) =>
-              setUserLogin({ ...userLogin, password: e.target.value })
+              setPasswordInput({
+                ...passwordInput,
+                value: e.target.value,
+                hasError: !e.target.value.length,
+              })
             }
             onEnter={onSubmit}
             placeholder="Password"
             type="password"
-            value={user.password}
+            value={passwordInput.value}
           />
           <Button
             className={styles.submitButton}

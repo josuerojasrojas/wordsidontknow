@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 
 const TextInput = ({
   className,
+  hasError,
   name,
   onChange,
   onEnter,
@@ -15,7 +16,12 @@ const TextInput = ({
   const onKeyPress = (e) => e.key === "Enter" && onEnter && onEnter(e);
 
   return (
-    <label className={classNames(className, styles.input)} htmlFor={name}>
+    <label
+      className={classNames(className, styles.input, {
+        [styles.hasError]: hasError,
+      })}
+      htmlFor={name}
+    >
       {name}
       <input
         type={type}

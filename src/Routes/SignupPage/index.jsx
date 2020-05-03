@@ -9,10 +9,17 @@ import styles from "./styles.module.css";
 import { Link } from "react-router-dom";
 
 const SignupPage = () => {
-  const [userLogin, setUserLogin] = useState({
-    email: "",
-    password: "",
-    rePassword: "",
+  const [emailInput, setEmailInput] = useState({
+    value: "",
+    hasError: false,
+  });
+  const [passwordInput, setPasswordInput] = useState({
+    value: "",
+    hasError: false,
+  });
+  const [otherPasswordInput, setOtherPasswordInput] = useState({
+    value: "",
+    hasError: false,
   });
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -20,16 +27,15 @@ const SignupPage = () => {
 
   const onSubmit = () => {
     setIsLoading(true);
-    if (userLogin.password !== userLogin.rePassword) {
+    if (passwordInput.value !== otherPasswordInput.value) {
       setErrorMessage("Passwords don't match.");
       setIsLoading(false);
     } else if (
-      userLogin.email.length &&
-      userLogin.password.length &&
-      userLogin.password === userLogin.rePassword
+      !getIsButtonDisabled() &&
+      passwordInput.value === otherPasswordInput.value
     ) {
       auth
-        .createUserWithEmailAndPassword(userLogin.email, userLogin.password)
+        .createUserWithEmailAndPassword(emailInput.value, passwordInput.value)
         .catch((e) => {
           setErrorMessage(e.message);
           setIsLoading(false);
@@ -40,16 +46,16 @@ const SignupPage = () => {
     }
   };
 
-  if (user.isAuthenticated) return <LogOutButton />;
-
-  // TODO: should update with regex for email and password
-  const isButtonDisabled =
+  const getIsButtonDisabled = () =>
     isLoading ||
-    !(
-      userLogin.email.length &&
-      userLogin.password.length &&
-      userLogin.rePassword.length
-    );
+    emailInput.hasError ||
+    passwordInput.hasError ||
+    otherPasswordInput.hasError ||
+    !emailInput.value.length ||
+    !passwordInput.value.length ||
+    !otherPasswordInput.value.length;
+
+  if (user.isAuthenticated) return <LogOutButton />;
 
   return (
     <div>
@@ -58,40 +64,56 @@ const SignupPage = () => {
         <div className={styles.formWrapper}>
           <TextInput
             onChange={(e) =>
-              setUserLogin({ ...userLogin, email: e.target.value })
+              setEmailInput({
+                ...emailInput,
+                value: e.target.value,
+                // TODO: could use regex or something to validate
+                hasError: !e.target.value.length,
+              })
             }
             onEnter={onSubmit}
             placeholder="Email"
             type="email"
-            value={user.email}
+            value={emailInput.value}
+            hasError={emailInput.hasError}
           />
           <TextInput
             autoComplete="off"
+            hasError={passwordInput.hasError}
             onChange={(e) =>
-              setUserLogin({ ...userLogin, password: e.target.value })
+              setPasswordInput({
+                ...passwordInput,
+                value: e.target.value,
+                hasError: !e.target.value.length,
+              })
             }
             onEnter={onSubmit}
             placeholder="Password"
             required
             type="password"
-            value={user.password}
+            value={passwordInput.value}
           />
           <TextInput
             autoComplete="off"
+            hasError={otherPasswordInput.hasError}
             onChange={(e) =>
-              setUserLogin({ ...userLogin, rePassword: e.target.value })
+              setOtherPasswordInput({
+                ...otherPasswordInput,
+                value: e.target.value,
+                hasError: !e.target.value.length,
+              })
             }
             onEnter={onSubmit}
             placeholder="Re-Enter Password"
             required
             type="password"
-            value={user.rePassword}
+            value={otherPasswordInput.value}
           />
           <Button
             className={styles.submitButton}
             onClick={onSubmit}
             text={"Sign Up"}
-            isDisabled={isButtonDisabled}
+            isDisabled={getIsButtonDisabled()}
           />
           <div className={styles.errorMessage}>{errorMessage}</div>
           <div>
