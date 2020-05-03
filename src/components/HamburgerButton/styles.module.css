@@ -3,6 +3,7 @@
   height: 34px;
   width: 34px;
   position: relative;
+  z-index: 100;
 }
 
 .hamburgerButton span {

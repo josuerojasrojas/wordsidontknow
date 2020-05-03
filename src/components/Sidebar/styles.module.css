@@ -1,0 +1,36 @@
+.sidebar {
+  background: var(--dark-purple);
+  box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.2);
+  font-size: 2rem;
+  max-width: 250px;
+  min-height: 100vh;
+  position: fixed;
+  right: 0;
+  padding-top: 152px;
+  width: 100%;
+  z-index: 100;
+}
+
+.sidebar a {
+  display: block;
+  position: relative;
+}
+
+.active::after {
+  content: "";
+  border-left: var(--green-ours) solid 4px;
+  height: 100%;
+  position: absolute;
+  left: 0;
+}
+
+.sidebar ul {
+  margin: 0;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin-bottom: 20px;
+  list-style: none;
+  padding: 0;
+}

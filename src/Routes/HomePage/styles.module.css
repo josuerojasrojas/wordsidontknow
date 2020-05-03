@@ -2,7 +2,6 @@
   align-items: center;
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - 88px);
   margin: auto;
   max-width: 300px;
   padding: 10px;
@@ -12,6 +11,7 @@
   font-weight: 400;
   letter-spacing: 0.04rem;
 }
+
 .logo {
   margin: 50px 0 30px;
 }
@@ -24,6 +24,6 @@
   display: flex;
 }
 
-.buttons > div:first-child {
+.buttons>div:first-child {
   margin-right: 20px;
 }

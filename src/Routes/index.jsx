@@ -15,57 +15,109 @@ import StatsPage from "Routes/StatsPage";
 import Login from "Routes/Login";
 import Header from "components/Header";
 import StudyPage from "Routes/StudyPage";
+import Sidebar from "components/Sidebar";
+
+// Routes Array
+const routes = (isAuthenticated) => [
+  {
+    name: "Home",
+    sidebar: true,
+    path: "/",
+    exact: true,
+    main: () => <HomePage />,
+  },
+  {
+    name: "Study",
+    protectedRoute: true,
+    sidebar: isAuthenticated,
+    path: "/study",
+    exact: true,
+    main: () => <StudyPage />,
+    isAuthenticated: isAuthenticated,
+    redirectTo: redirectTo,
+  },
+  {
+    name: "Search",
+    protectedRoute: true,
+    sidebar: isAuthenticated,
+    path: "/search",
+    exact: true,
+    main: () => <SearchPage />,
+    isAuthenticated: isAuthenticated,
+    redirectTo: redirectTo,
+  },
+  {
+    name: "Login",
+    sidebar: !isAuthenticated,
+    path: "/login",
+    exact: true,
+    main: () => <Login />,
+  },
+  {
+    name: "Sign Up",
+    sidebar: !isAuthenticated,
+    path: "/signup",
+    exact: true,
+    main: () => <SignupPage />,
+  },
+  {
+    name: "Stats",
+    protectedRoute: true,
+    sidebar: isAuthenticated,
+    path: "/stats",
+    exact: true,
+    main: () => "Stats Success",
+    isAuthenticated: isAuthenticated,
+    redirectTo: redirectTo,
+  },
+  {
+    name: "Account",
+    protectedRoute: true,
+    sidebar: isAuthenticated,
+    path: "/account",
+    exact: true,
+    main: () => "Account Success",
+    isAuthenticated: isAuthenticated,
+    redirectTo: redirectTo,
+  },
+  {
+    path: "/*",
+    exact: true,
+    main: () => <SignupPage />,
+  },
+];
 
 // all routes go here
 const Routes = () => {
   const { user } = useContext(UserContext);
   const { isAuthenticated } = user;
+
+  const _routes = routes(isAuthenticated);
+
   // TODO: should return loading or something while the user is setup
   if (!user.isUserReady) return "";
   return (
     <Router>
+      <Sidebar routes={_routes} />
       <Header />
       <Switch>
-        <Route exact path="/">
-          {isAuthenticated ? <Redirect to="/search" /> : <HomePage />}
-        </Route>
-        <ProtectedLoginRoute
-          isAuthenticated={isAuthenticated}
-          exact
-          path="/study"
-        >
-          <StudyPage />
-        </ProtectedLoginRoute>
-        <ProtectedLoginRoute
-          isAuthenticated={isAuthenticated}
-          exact
-          path="/search"
-        >
-          <SearchPage />
-        </ProtectedLoginRoute>
-        <Route exact path={redirectTo}>
-          <Login />
-        </Route>
-        <Route exact path="/signup">
-          <SignupPage />
-        </Route>
-        <ProtectedLoginRoute
-          isAuthenticated={isAuthenticated}
-          exact
-          path="/stats"
-        >
-          <StatsPage />
-        </ProtectedLoginRoute>
-        <ProtectedLoginRoute
-          isAuthenticated={isAuthenticated}
-          exact
-          path="/account"
-        >
-          Account Success!!!
-        </ProtectedLoginRoute>
-        <Route exact path="/*">
-          no match page
-        </Route>
+        {_routes.map((route, index) =>
+          route.protectedRoute ? (
+            <ProtectedLoginRoute
+              children={route.main}
+              exact={route.exact}
+              isAuthenticated={route.isAuthenticated}
+              path={route.path}
+            />
+          ) : (
+              <Route
+                key={index}
+                exact={route.exact}
+                path={route.path}
+                children={route.main}
+              />
+            )
+        )}
       </Switch>
     </Router>
   );
