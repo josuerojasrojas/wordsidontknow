@@ -1,4 +1,6 @@
 import React, { useContext, useState } from "react";
+import { Link, useHistory } from "react-router-dom";
+import PropTypes from "prop-types";
 import TextInput from "components/TextInput";
 import Button from "components/Button";
 import Card from "components/Card";
@@ -6,9 +8,8 @@ import { UserContext } from "components/UserContext";
 import { auth } from "_firebase.js";
 import LogOutButton from "components/LogoutButton";
 import styles from "./styles.module.css";
-import { Link } from "react-router-dom";
 
-const Login = () => {
+const Login = ({ isRedirect }) => {
   const [emailInput, setEmailInput] = useState({
     value: "",
     hasError: false,
@@ -21,6 +22,7 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const { user, setUser } = useContext(UserContext);
+  const history = useHistory();
 
   const onSubmit = () => {
     setIsLoading(true);
@@ -36,7 +38,9 @@ const Login = () => {
             uid: _user.uid,
             ...user,
           });
+          // hmmm. might changed push to be a prop so someone can push anywhere they want to
           setIsLoading(false);
+          isRedirect && history.push("/");
         })
         .catch((e) => {
           setErrorMessage(e.message);
@@ -45,6 +49,7 @@ const Login = () => {
     }
   };
 
+  // TODO: should redirect if login to logout page!?!?! not sure will think about it.
   if (user.isAuthenticated) return <LogOutButton />;
 
   // TODO: should update with regex for email and password
@@ -103,6 +108,14 @@ const Login = () => {
       </Card>
     </div>
   );
+};
+
+Login.defaultProps = {
+  isRedirect: true,
+};
+
+Login.propTypes = {
+  isRedirect: PropTypes.bool,
 };
 
 export default Login;

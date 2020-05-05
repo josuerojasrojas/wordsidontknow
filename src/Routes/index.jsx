@@ -1,6 +1,11 @@
 import React, { useContext } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import ProtectedRoute from "components/ProtectedRoute";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
+import ProtectedLoginRoute from "components/ProtectedLoginRoute";
 import { redirectTo } from "constants/index";
 import { UserContext } from "components/UserContext";
 import HomePage from "Routes/HomePage";
@@ -22,46 +27,42 @@ const Routes = () => {
       <Header />
       <Switch>
         <Route exact path="/">
-          <HomePage />
+          {isAuthenticated ? <Redirect to="/search" /> : <HomePage />}
         </Route>
-        <ProtectedRoute
+        <ProtectedLoginRoute
           isAuthenticated={isAuthenticated}
-          redirectTo={redirectTo}
           exact
           path="/study"
         >
           <StudyPage />
-        </ProtectedRoute>
-        <ProtectedRoute
+        </ProtectedLoginRoute>
+        <ProtectedLoginRoute
           isAuthenticated={isAuthenticated}
-          redirectTo={redirectTo}
           exact
           path="/search"
         >
           <SearchPage />
-        </ProtectedRoute>
+        </ProtectedLoginRoute>
         <Route exact path={redirectTo}>
           <Login />
         </Route>
         <Route exact path="/signup">
           <SignupPage />
         </Route>
-        <ProtectedRoute
+        <ProtectedLoginRoute
           isAuthenticated={isAuthenticated}
-          redirectTo={redirectTo}
           exact
           path="/stats"
         >
           <StatsPage />
-        </ProtectedRoute>
-        <ProtectedRoute
+        </ProtectedLoginRoute>
+        <ProtectedLoginRoute
           isAuthenticated={isAuthenticated}
-          redirectTo={redirectTo}
           exact
           path="/account"
         >
           Account Success!!!
-        </ProtectedRoute>
+        </ProtectedLoginRoute>
         <Route exact path="/*">
           no match page
         </Route>

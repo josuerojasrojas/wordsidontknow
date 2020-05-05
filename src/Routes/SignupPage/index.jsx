@@ -1,4 +1,6 @@
 import React, { useState, useContext } from "react";
+import PropTypes from "prop-types";
+import { Link, useHistory } from "react-router-dom";
 import TextInput from "components/TextInput";
 import Button from "components/Button";
 import Card from "components/Card";
@@ -6,9 +8,8 @@ import { UserContext } from "components/UserContext";
 import { auth } from "_firebase.js";
 import LogOutButton from "components/LogoutButton";
 import styles from "./styles.module.css";
-import { Link } from "react-router-dom";
 
-const SignupPage = () => {
+const SignupPage = ({ isRedirect }) => {
   const [emailInput, setEmailInput] = useState({
     value: "",
     hasError: false,
@@ -24,6 +25,7 @@ const SignupPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const { user } = useContext(UserContext);
+  const history = useHistory();
 
   const onSubmit = () => {
     setIsLoading(true);
@@ -34,8 +36,10 @@ const SignupPage = () => {
       !getIsButtonDisabled() &&
       passwordInput.value === otherPasswordInput.value
     ) {
+      // hmmm. might changed push to be a prop so someone can push anywhere they want to
       auth
         .createUserWithEmailAndPassword(emailInput.value, passwordInput.value)
+        .then((_) => isRedirect && history.push("/"))
         .catch((e) => {
           setErrorMessage(e.message);
           setIsLoading(false);
@@ -123,6 +127,14 @@ const SignupPage = () => {
       </Card>
     </div>
   );
+};
+
+SignupPage.defaultProps = {
+  isRedirect: true,
+};
+
+SignupPage.propTypes = {
+  isRedirect: PropTypes.bool,
 };
 
 export default SignupPage;
