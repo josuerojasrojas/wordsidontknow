@@ -10,6 +10,10 @@ export const DICTIONARY_API = (word) =>
 export const FIREBASE_ALL_WORDS = "/words";
 export const FIREBASE_SINGLE_WORD = (word) => `/words/${word}/definition`;
 export const FIREBASE_USER_WORDS = (uid) => `users/${uid}/words`;
+export const FIREBASE_USER_SINGLE_WORD = (uid, word) =>
+  `/users/${uid}/words/${word}`;
+export const FIREBASE_USER_SINGLE_WORD_SET = (uid, word) =>
+  `/users/${uid}/words/${word}/date`;
 
 // user context
 export const USER_CONTEXT_INIT = {
