@@ -6,22 +6,27 @@ import Logo from "components/Logo";
 import logoSrc from "assets/circle.svg";
 import { Link } from "react-router-dom";
 import HamburgerButton from "components/HamburgerButton";
+import Sidebar from "components/Sidebar";
 
-const Header = ({ className }) => {
+const Header = ({ className, _routes }) => {
   const [toggle, setToggle] = useState(false);
 
   return (
-    <div className={classNames(className, styles.header)}>
-      <Link to="/">
-        <Logo imageSrc={logoSrc} />
-      </Link>
-      <HamburgerButton
-        toggle={toggle}
-        onClick={() => {
-          setToggle(!toggle);
-        }}
-      />
-    </div>
+    <>
+      <div className={classNames(className, styles.header)}>
+        <Sidebar routes={_routes} toggle={toggle} />
+        <Link to="/">
+          <Logo imageSrc={logoSrc} />
+        </Link>
+        <HamburgerButton
+          toggle={toggle}
+          onClick={() => {
+            setToggle(!toggle);
+          }}
+        />
+      </div>
+      <div className={styles["header-space"]}></div>
+    </>
   );
 };
 

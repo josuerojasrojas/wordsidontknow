@@ -3,8 +3,12 @@ import { NavLink } from "react-router-dom";
 import classNames from "classnames";
 import styles from "./styles.module.css";
 
-const Sidebar = ({ routes }) => (
-  <div className={classNames(styles.sidebar)}>
+const Sidebar = ({ routes, toggle }) => (
+  <div
+    className={classNames(styles.sidebar, {
+      [styles.slideIn]: toggle,
+    })}
+  >
     <ul>
       {routes.map((route, index) =>
         route.sidebar ? (

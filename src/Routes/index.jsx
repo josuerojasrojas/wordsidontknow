@@ -15,7 +15,6 @@ import StatsPage from "Routes/StatsPage";
 import Login from "Routes/Login";
 import Header from "components/Header";
 import StudyPage from "Routes/StudyPage";
-import Sidebar from "components/Sidebar";
 
 // Routes Array
 const routes = (isAuthenticated) => [
@@ -98,8 +97,7 @@ const Routes = () => {
   if (!user.isUserReady) return "";
   return (
     <Router>
-      <Sidebar routes={_routes} />
-      <Header />
+      <Header _routes={_routes} />
       <Switch>
         {_routes.map((route, index) =>
           route.protectedRoute ? (
