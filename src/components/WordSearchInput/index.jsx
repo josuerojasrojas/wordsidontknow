@@ -9,6 +9,7 @@ import {
   DEFINITION_RESULTS,
   DICTIONARY_API,
   FIREBASE_SINGLE_WORD,
+  FIREBASE_SINGLE_WORD_DEF,
   FIREBASE_USER_SINGLE_WORD_SET,
   Init_Search_Description_Text,
   IS_SEARCHING_TEXT,
@@ -22,7 +23,7 @@ async function getDefinitions(value, setState, setTimerState) {
 
   // first try on firebase to get defs
   const firebaseWordSnapshot = await database
-    .ref(FIREBASE_SINGLE_WORD(value))
+    .ref(FIREBASE_SINGLE_WORD_DEF(value))
     .once("value");
   const firebaseDefinition = firebaseWordSnapshot.val();
   if (firebaseDefinition) defs = { definitions: [firebaseDefinition] };
@@ -89,10 +90,11 @@ const WordSearchInput = () => {
 
   const addToList = () => {
     if (isAddWordDisabled) return;
+    const currDate = Date.now();
     setIsAddWordDisabled(true);
     database
       .ref(FIREBASE_USER_SINGLE_WORD_SET(user.uid, searchValue))
-      .set(Date.now() + "")
+      .set(currDate)
       .then(() => {
         // TODO: should probably give a success message
         console.log("success added");
@@ -102,8 +104,11 @@ const WordSearchInput = () => {
         setIsAddWordDisabled(false);
         console.error(e);
       });
-    // TODO: add definition to
-    // /words/$word/definition
+    database.ref(FIREBASE_SINGLE_WORD(searchValue)).set({
+      // TODO: should update them later to have verb, nount, etc
+      definition: searchResults.definitions[0],
+      lastUpdated: currDate,
+    });
   };
 
   const getText = (searchValue, searchResult) => {

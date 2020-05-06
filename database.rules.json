@@ -11,7 +11,7 @@
             },
             "date": {
               ".write": "auth != null && $uid === auth.uid",
-              ".validate": "newData.isString()"
+              ".validate": "newData.isNumber()"
             },
             "$other": { ".validate": false }
           }
@@ -22,7 +22,8 @@
     "words": {
       ".write": "auth != null",
       ".read": "auth != null",
-      "definition": { ".validate": "newData.isString()" }
+      "definition": { ".validate": "newData.isString()" },
+      "lastUpdated": { ".validate": "newData.isNumber()" }
     },
     "$other": { ".validate": false }
   }
