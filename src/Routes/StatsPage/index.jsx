@@ -15,7 +15,7 @@ const StatsPage = () => {
         .once("value")
         .then((snapshot) => setUserWords(snapshot.val()))
         .catch(console.error);
-  }, []);
+  }, [user.uid]);
 
   return <Table data={userWords} />;
 };
