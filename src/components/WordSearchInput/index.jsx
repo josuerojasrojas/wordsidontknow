@@ -18,7 +18,8 @@ import {
 import { database } from "_firebase";
 import { UserContext } from "components/UserContext";
 
-async function getDefinitions(value, setState, setTimerState) {
+async function getDefinitions(_value, setState, setTimerState) {
+  const value = _value.toLowerCase();
   let defs = null;
 
   // first try on firebase to get defs
@@ -31,7 +32,7 @@ async function getDefinitions(value, setState, setTimerState) {
   else {
     const results = await fetch(DICTIONARY_API(value));
     const reqResults = await results.json();
-    if (reqResults && reqResults[0].shortdef) {
+    if (reqResults.length && reqResults[0].shortdef) {
       defs = {
         definitions: [reqResults[0].shortdef],
       };
@@ -91,9 +92,10 @@ const WordSearchInput = () => {
   const addToList = () => {
     if (isAddWordDisabled) return;
     const currDate = Date.now();
+    const word = searchValue.toLowerCase();
     setIsAddWordDisabled(true);
     database
-      .ref(FIREBASE_USER_SINGLE_WORD_SET(user.uid, searchValue))
+      .ref(FIREBASE_USER_SINGLE_WORD_SET(user.uid, word))
       .set(currDate)
       .then(() => {
         // TODO: should probably give a success message
@@ -104,7 +106,7 @@ const WordSearchInput = () => {
         setIsAddWordDisabled(false);
         console.error(e);
       });
-    database.ref(FIREBASE_SINGLE_WORD(searchValue)).set({
+    database.ref(FIREBASE_SINGLE_WORD(word)).set({
       // TODO: should update them later to have verb, nount, etc
       definition: searchResults.definitions[0],
       lastUpdated: currDate,
