@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import styles from "./styles.module.css";
@@ -19,6 +19,29 @@ const months = [
   "Dec",
 ];
 
+const compare = (a, b) => {
+  console.log(a, b);
+  if (isNaN(a) && isNaN(b)) {
+    // compare strings
+    if (a > b) {
+      return 1;
+    } else if (a.value < b.value) {
+      return -1;
+    } else {
+      return 0;
+    }
+  } else {
+    return a - b;
+  }
+}
+
+const sortValues = (colName, words) => {
+  console.log('hello', words);
+  return [...words.sort((a, b) => {
+    return (compare(a[colName], b[colName]))
+  })]
+}
+
 const formatDate = (date) => {
   // try to parse integer cause firebase data is like dat!
   const dateNumber = parseInt(date);
@@ -31,31 +54,34 @@ const formatDate = (date) => {
   if (dateObj.toString() !== "Invalid Date")
     return `${
       months[dateObj.getMonth()]
-    } ${dateObj.getDate()}, ${dateObj.getFullYear()}`;
+      } ${dateObj.getDate()}, ${dateObj.getFullYear()}`;
   else return dateObj.toString();
 };
 
 // a row is created base on the data from firebase for example a rowdata = {someword: {amount: 10, date: 102920332}}
-const Row = ({ className, fields, formatter, onlyFields, word, wordData }) => {
+const Row = ({ className, fields, formatter, onlyFields, wordData, onClick }) => {
   return (
     <div
       className={classNames(className, styles.row, {
         [styles.titleRow]: onlyFields,
       })}
     >
-      <div className={styles.cell}>{onlyFields ? "word" : word}</div>
       {fields.map((field, i) => (
-        <div key={i} className={styles.cell}>
+        <div key={i} className={styles.cell} onClick={() => { onClick(field) }}>
           {onlyFields
             ? field
             : formatter[field]
-            ? formatter[field](wordData[field])
-            : wordData[field]}
+              ? formatter[field](wordData[field])
+              : wordData[field]}
         </div>
       ))}
     </div>
   );
 };
+
+Row.defaultProps = {
+  onClick: () => { }
+}
 
 Row.propTypes = {
   className: PropTypes.string,
@@ -67,15 +93,34 @@ Row.propTypes = {
 };
 
 const Table = ({ columns, data, formatter }) => {
+
+  const [wordOrder, setWordOrder] = useState([])
+
+  useEffect(() => {
+    if (data) {
+
+      let words = [];
+
+      for (const word in data) {
+        words.push({ word, ...data[word] });
+      }
+      setWordOrder(sortValues("word", words));
+    }
+  }, [data]);
+
   if (!data) return <Card>No Stats found</Card>;
+
+  const sortByColumn = (colName) => {
+    setWordOrder(sortValues(colName, wordOrder))
+    console.log(colName);
+  }
   return (
     <Card className={styles.table}>
-      <Row className={styles.topRow} onlyFields={true} fields={columns}></Row>
-      {Object.keys(data).map((word, index) => (
+      <Row className={styles.topRow} onlyFields={true} fields={columns} onClick={sortByColumn}></Row>
+      {wordOrder.map((values, index) => (
         <Row
           key={index}
-          word={word}
-          wordData={data[word]}
+          wordData={values}
           fields={columns}
           formatter={formatter}
         ></Row>
@@ -85,7 +130,7 @@ const Table = ({ columns, data, formatter }) => {
 };
 
 Table.defaultProps = {
-  columns: ["amount", "date"],
+  columns: ["word", "amount", "date"],
   formatter: { date: formatDate },
 };
 
