@@ -20,25 +20,25 @@ const months = [
 ];
 
 const compare = (a, b) => {
-  console.log(a, b);
   if (isNaN(a) && isNaN(b)) {
     // compare strings
     if (a > b) {
       return 1;
-    } else if (a.value < b.value) {
+    } else if (a < b) {
       return -1;
     } else {
       return 0;
     }
   } else {
+    console.log('here compare', a - b)
     return a - b;
   }
 }
 
-const sortValues = (colName, words) => {
-  console.log('hello', words);
+// Passed in asc to determine ascending order.
+const sortValues = (colName, words, asc = true) => {
   return [...words.sort((a, b) => {
-    return (compare(a[colName], b[colName]))
+    return asc ? (compare(a[colName], b[colName])) : (compare(b[colName], a[colName]))
   })]
 }
 
@@ -94,7 +94,8 @@ Row.propTypes = {
 
 const Table = ({ columns, data, formatter }) => {
 
-  const [wordOrder, setWordOrder] = useState([])
+  const [wordOrder, setWordOrder] = useState([]);
+  const [isColname, setIsColname] = useState("word");
 
   useEffect(() => {
     if (data) {
@@ -111,9 +112,12 @@ const Table = ({ columns, data, formatter }) => {
   if (!data) return <Card>No Stats found</Card>;
 
   const sortByColumn = (colName) => {
-    setWordOrder(sortValues(colName, wordOrder))
-    console.log(colName);
+
+    setWordOrder(sortValues(colName, wordOrder, !(isColname === colName)))
+
+    setIsColname(isColname === colName ? "" : colName)
   }
+
   return (
     <Card className={styles.table}>
       <Row className={styles.topRow} onlyFields={true} fields={columns} onClick={sortByColumn}></Row>
