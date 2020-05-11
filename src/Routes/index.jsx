@@ -3,7 +3,6 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect,
 } from "react-router-dom";
 import ProtectedLoginRoute from "components/ProtectedLoginRoute";
 import { redirectTo } from "constants/index";
@@ -65,7 +64,7 @@ const routes = (isAuthenticated) => [
     sidebar: isAuthenticated,
     path: "/stats",
     exact: true,
-    main: () => "Stats Success",
+    main: () => <StatsPage />,
     isAuthenticated: isAuthenticated,
     redirectTo: redirectTo,
   },

@@ -4,9 +4,9 @@
   font-size: 2rem;
   max-width: 250px;
   min-height: 100vh;
+  padding-top: 152px;
   position: fixed;
   right: -100%;
-  padding-top: 152px;
   top: 0;
   transition: 300ms right;
   width: 100%;
@@ -19,11 +19,11 @@
 }
 
 .active::after {
-  content: "";
   border-left: var(--green-ours) solid 4px;
+  content: "";
   height: 100%;
-  position: absolute;
   left: 0;
+  position: absolute;
 }
 
 .sidebar.slideIn {
@@ -36,7 +36,7 @@
 }
 
 .sidebar ul li {
-  margin-bottom: 20px;
   list-style: none;
+  margin-bottom: 20px;
   padding: 0;
 }
