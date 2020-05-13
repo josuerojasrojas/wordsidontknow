@@ -14,7 +14,7 @@ const Header = ({ className, _routes }) => {
   return (
     <>
       <div className={classNames(className, styles.header)}>
-        <Sidebar routes={_routes} toggle={toggle} />
+        <Sidebar routes={_routes} toggle={toggle} setToggle={setToggle} />
         <Link to="/">
           <Logo imageSrc={logoSrc} />
         </Link>
