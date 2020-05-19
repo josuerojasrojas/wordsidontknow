@@ -12,19 +12,18 @@ const HamburgerButton = ({ toggle, onClick }) => {
   };
 
   return (
-    <>
-      <div
-        onClick={_onClick}
-        className={classNames(styles.hamburgerButton, {
-          [styles.isToggled]: isRender && toggle,
-          [styles.isNotToggled]: isRender && !toggle,
-        })}
-      >
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-    </>
+    <div
+      id="hamburger-button"
+      onClick={_onClick}
+      className={classNames(styles.hamburgerButton, {
+        [styles.isToggled]: isRender && toggle,
+        [styles.isNotToggled]: isRender && !toggle,
+      })}
+    >
+      <span />
+      <span />
+      <span />
+    </div>
   );
 };
 
