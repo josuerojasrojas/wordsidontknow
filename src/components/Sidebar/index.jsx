@@ -31,7 +31,7 @@ const Sidebar = ({ routes, toggle, setToggle }) => {
       <ul>
         {routes.map((route, index) =>
           route.sidebar ? (
-            <li>
+            <li key={index}>
               <NavLink
                 to={route.path}
                 exact
