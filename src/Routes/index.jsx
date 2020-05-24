@@ -1,9 +1,5 @@
 import React, { useContext } from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import ProtectedLoginRoute from "components/ProtectedLoginRoute";
 import { redirectTo } from "constants/index";
 import { UserContext } from "components/UserContext";
@@ -11,6 +7,7 @@ import HomePage from "Routes/HomePage";
 import SignupPage from "Routes/SignupPage";
 import SearchPage from "Routes/SearchPage";
 import StatsPage from "Routes/StatsPage";
+import AccountPage from "Routes/AccountPage";
 import Login from "Routes/Login";
 import Header from "components/Header";
 import StudyPage from "Routes/StudyPage";
@@ -19,10 +16,10 @@ import StudyPage from "Routes/StudyPage";
 const routes = (isAuthenticated) => [
   {
     name: "Home",
-    sidebar: true,
+    sidebar: !isAuthenticated,
     path: "/",
     exact: true,
-    main: () => <HomePage />,
+    main: () => (isAuthenticated ? <SearchPage /> : <HomePage />),
   },
   {
     name: "Study",
@@ -74,7 +71,7 @@ const routes = (isAuthenticated) => [
     sidebar: isAuthenticated,
     path: "/account",
     exact: true,
-    main: () => "Account Success",
+    main: () => <AccountPage />,
     isAuthenticated: isAuthenticated,
     redirectTo: redirectTo,
   },
@@ -101,19 +98,20 @@ const Routes = () => {
         {_routes.map((route, index) =>
           route.protectedRoute ? (
             <ProtectedLoginRoute
+              key={index}
               children={route.main}
               exact={route.exact}
               isAuthenticated={route.isAuthenticated}
               path={route.path}
             />
           ) : (
-              <Route
-                key={index}
-                exact={route.exact}
-                path={route.path}
-                children={route.main}
-              />
-            )
+            <Route
+              key={index}
+              exact={route.exact}
+              path={route.path}
+              children={route.main}
+            />
+          )
         )}
       </Switch>
     </Router>
