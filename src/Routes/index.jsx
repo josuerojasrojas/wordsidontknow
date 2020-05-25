@@ -11,7 +11,6 @@ import AccountPage from "Routes/AccountPage";
 import Login from "Routes/Login";
 import Header from "components/Header";
 import StudyPage from "Routes/StudyPage";
-import Footer from "components/Footer";
 import styles from "./styles.module.css";
 
 // Routes Array
@@ -118,7 +117,6 @@ const Routes = () => {
           )}
         </Switch>
       </div>
-      <Footer />
     </Router>
   );
 };
