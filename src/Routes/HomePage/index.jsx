@@ -3,10 +3,20 @@ import styles from "./styles.module.css";
 import Button from "components/Button";
 import Logo from "components/Logo";
 import logoSrc from "assets/circle.svg";
-import { useHistory } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
+import PropTypes from "prop-types";
 
-const HomePage = () => {
+const HomePage = ({ isAuthenticated }) => {
   const history = useHistory();
+
+  if (isAuthenticated)
+    return (
+      <Redirect
+        to={{
+          pathname: "/search",
+        }}
+      />
+    );
 
   return (
     <div className={styles.home}>
@@ -25,6 +35,10 @@ const HomePage = () => {
       </div>
     </div>
   );
+};
+
+HomePage.propTypes = {
+  isAuthenticated: PropTypes.bool,
 };
 
 export default HomePage;
