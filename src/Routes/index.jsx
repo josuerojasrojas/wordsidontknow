@@ -11,6 +11,8 @@ import AccountPage from "Routes/AccountPage";
 import Login from "Routes/Login";
 import Header from "components/Header";
 import StudyPage from "Routes/StudyPage";
+import Footer from "components/Footer";
+import styles from "./styles.module.css";
 
 // Routes Array
 const routes = (isAuthenticated) => [
@@ -19,7 +21,7 @@ const routes = (isAuthenticated) => [
     sidebar: !isAuthenticated,
     path: "/",
     exact: true,
-    main: () => (isAuthenticated ? <SearchPage /> : <HomePage />),
+    main: () => <HomePage isAuthenticated={isAuthenticated} />,
   },
   {
     name: "Study",
@@ -94,26 +96,29 @@ const Routes = () => {
   return (
     <Router>
       <Header _routes={_routes} />
-      <Switch>
-        {_routes.map((route, index) =>
-          route.protectedRoute ? (
-            <ProtectedLoginRoute
-              key={index}
-              children={route.main}
-              exact={route.exact}
-              isAuthenticated={route.isAuthenticated}
-              path={route.path}
-            />
-          ) : (
-            <Route
-              key={index}
-              exact={route.exact}
-              path={route.path}
-              children={route.main}
-            />
-          )
-        )}
-      </Switch>
+      <div className={styles.page}>
+        <Switch>
+          {_routes.map((route, index) =>
+            route.protectedRoute ? (
+              <ProtectedLoginRoute
+                key={index}
+                children={route.main}
+                exact={route.exact}
+                isAuthenticated={route.isAuthenticated}
+                path={route.path}
+              />
+            ) : (
+              <Route
+                key={index}
+                exact={route.exact}
+                path={route.path}
+                children={route.main}
+              />
+            )
+          )}
+        </Switch>
+      </div>
+      <Footer />
     </Router>
   );
 };
