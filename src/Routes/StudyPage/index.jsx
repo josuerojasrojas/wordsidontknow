@@ -95,13 +95,15 @@ const StudyPage = () => {
         key={userWords[currentWordIndex]}
         frontContent={word}
         backContent={
-          typeof def === "string"
-            ? def
-            : def.map((d, i) => (
-                <p>
-                  {i + 1}. {d}
-                </p>
-              ))
+          typeof def === "string" ? (
+            <p className={styles.defText}>def</p>
+          ) : (
+            def.map((d, i) => (
+              <p className={styles.defText}>
+                {i + 1}. {d}
+              </p>
+            ))
+          )
         }
       />
     </div>
