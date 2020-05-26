@@ -94,7 +94,17 @@ const StudyPage = () => {
       <FlipCard
         key={userWords[currentWordIndex]}
         frontContent={word}
-        backContent={def}
+        backContent={
+          typeof def === "string" ? (
+            <p className={styles.defText}>def</p>
+          ) : (
+            def.map((d, i) => (
+              <p className={styles.defText}>
+                {i + 1}. {d}
+              </p>
+            ))
+          )
+        }
       />
     </div>
   );

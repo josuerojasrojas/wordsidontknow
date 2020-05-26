@@ -128,13 +128,17 @@ const WordSearchInput = () => {
       const resultComponents = [];
       resultComponents.push(
         searchResults.definitions &&
-          searchResults.definitions.map((def, i) => {
-            return (
-              <div key={i} className={styles.definition}>
-                {def}
-              </div>
-            );
-          })
+          searchResults.definitions.map((def, i) => (
+            <div key={i} className={styles.definition}>
+              {typeof def === "string"
+                ? def
+                : def.map((d, j) => (
+                    <p>
+                      {j + 1}. {d}
+                    </p>
+                  ))}
+            </div>
+          ))
       );
       resultComponents.push(
         searchResults.closeWords &&
