@@ -42,7 +42,6 @@ async function getDefinitions(_value, setState, setTimerState) {
       };
     }
   }
-  console.log(defs);
   setTimerState(null);
   return setState(defs);
 }
@@ -125,7 +124,6 @@ const WordSearchInput = () => {
   };
 
   const getResults = (searchResults) => {
-    console.log("searchResults:", searchResults);
     if (searchResults) {
       const resultComponents = [];
       resultComponents.push(
