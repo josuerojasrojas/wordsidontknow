@@ -121,7 +121,7 @@ const WordSearchInput = () => {
               {typeof def === "string"
                 ? def
                 : def.map((d, j) => (
-                    <p>
+                    <p key={`p-${j}`}>
                       {j + 1}. {d}
                     </p>
                   ))}
@@ -143,6 +143,7 @@ const WordSearchInput = () => {
       <Card>
         <TextInput
           className={styles.input}
+          clear={() => onChange("")}
           onChange={onChange}
           placeholder="Search words"
           value={searchValue}

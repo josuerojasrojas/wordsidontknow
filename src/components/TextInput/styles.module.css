@@ -1,6 +1,5 @@
 .input {
-  display: flex;
-  flex-direction: column;
+  display: block;
   position: relative;
   text-align: left;
 }
@@ -8,17 +7,31 @@
 .input input {
   background-color: rgb(0, 0, 0, 0);
   border: none;
-  border-bottom: 2px solid var(--dark-gray);
   border-radius: 0;
   color: var(--white);
   font-size: 16px;
   margin-top: 10px;
   padding: 10px;
+  width: 100%;
+}
+
+.hasClear input {
+  width: calc(100% - 16px);
 }
 
 .input input:focus {
   outline: none;
   outline-offset: 0;
+}
+.input::before {
+  background-color: var(--dark-gray);
+  bottom: 2px;
+  content: "";
+  height: 2px;
+  margin-left: 0;
+  position: absolute;
+  transition: margin 300ms, width 300ms;
+  width: 100%;
 }
 
 .input::after {
@@ -26,6 +39,7 @@
   bottom: 2px;
   content: "";
   height: 2px;
+  left: 0;
   margin-left: 50%;
   position: absolute;
   transition: margin 300ms, width 300ms;
@@ -41,4 +55,26 @@
   background-color: var(--red-ours);
   margin-left: 0;
   width: 100%;
+}
+
+.clear {
+  background-color: lightgray;
+  -webkit-marsk-size: cover;
+  -webkit-mask-size: cover;
+  -webkit-mask: url("../../assets/x.svg") 50% 50% no-repeat;
+  cursor: pointer;
+  display: none;
+  height: 16px;
+  margin-bottom: -2px;
+  mask-size: cover;
+  transition: background-color 0.4s;
+  width: 16px;
+}
+
+.clear:hover {
+  background-color: var(--white);
+}
+
+.hasClear .clear {
+  display: inline-block;
 }
