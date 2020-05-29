@@ -32,3 +32,7 @@ export const CLOSE_WORDS_RESULTS = (searchValue) =>
 export const DEFINITION_RESULTS = (searchValue) =>
   `Definitions for ${searchValue}:`;
 export const IS_SEARCHING_TEXT = "Searching...";
+export const DEFAULT_MESSAGE = {
+  isError: false,
+  message: "+ Add this to your list",
+};
