@@ -6,10 +6,11 @@ import Card from "components/Card";
 import CloseWord from "components/CloseWord";
 import {
   CLOSE_WORDS_RESULTS,
+  DEFAULT_MESSAGE,
   DEFINITION_RESULTS,
   DICTIONARY_API,
-  FIREBASE_SINGLE_WORD,
   FIREBASE_SINGLE_WORD_DEF,
+  FIREBASE_SINGLE_WORD,
   FIREBASE_USER_SINGLE_WORD_SET,
   Init_Search_Description_Text,
   IS_SEARCHING_TEXT,
@@ -46,24 +47,6 @@ async function getDefinitions(_value, setState, setTimerState) {
   return setState(defs);
 }
 
-// random data
-// gonna leave this here cause it might be useful if we run out of data from api
-// const getDefinitions = async (value, setState, setTimerState) => {
-//   const hasResult = Math.random();
-//   let defs = null;
-//   if (hasResult < 0.3) {
-//     defs = {
-//       closeWords: ["ss", "some", "something", "someone"],
-//     };
-//   } else if (hasResult < 0.6) {
-//     defs = {
-//       definitions: ["some definition one"],
-//     };
-//   }
-//   setTimerState(null);
-//   return setState(defs);
-// };
-
 const WordSearchInput = () => {
   const [searchValue, setSearchValue] = useState("");
   const [searchResults, setSearchResults] = useState(null);
@@ -71,9 +54,11 @@ const WordSearchInput = () => {
   const [timerState, setTimerState] = useState(null);
   const [isAddWordDisabled, setIsAddWordDisabled] = useState(false);
   const { user } = useContext(UserContext);
+  const [addWordMsg, setAddWordMsg] = useState(DEFAULT_MESSAGE);
 
   const onChange = (e) => {
     const value = typeof e === "string" ? e : e.target.value;
+    setAddWordMsg(DEFAULT_MESSAGE);
     setIsAddWordDisabled(false);
     setSearchValue(value);
     clearTimeout(timerState);
@@ -99,12 +84,15 @@ const WordSearchInput = () => {
       .set(currDate)
       .then(() => {
         // TODO: should probably give a success message
-        console.log("success added");
+        setAddWordMsg({ isError: false, message: "success added" });
       })
       .catch((e) => {
         // TODO: should probably mention there was an error or something and to try again
         setIsAddWordDisabled(false);
-        console.error(e);
+        setAddWordMsg({
+          isError: true,
+          message: "Something went wrong. Try again.",
+        });
       });
     database.ref(FIREBASE_SINGLE_WORD(word)).set({
       // TODO: should update them later to have verb, nount, etc
@@ -168,9 +156,10 @@ const WordSearchInput = () => {
             onClick={addToList}
             className={classNames(styles.addNew, {
               [styles.disabled]: isAddWordDisabled,
+              [styles.addWordError]: addWordMsg.isError,
             })}
           >
-            + Add this to your list
+            {addWordMsg.message}
           </div>
         )}
       </Card>
