@@ -77,6 +77,18 @@ const routes = (isAuthenticated) => [
     redirectTo: redirectTo,
   },
   {
+    name: "Feedback",
+    isExternal: true,
+    sidebar: true,
+    path: "https://github.com/josuerojasrojas/wordsidontknow/issues",
+  },
+  {
+    name: "Source",
+    isExternal: true,
+    sidebar: true,
+    path: "https://github.com/josuerojasrojas/wordsidontknow",
+  },
+  {
     path: "/*",
     exact: true,
     main: () => <SignupPage />,
@@ -97,8 +109,9 @@ const Routes = () => {
       <Header _routes={_routes} />
       <div className={styles.page}>
         <Switch>
-          {_routes.map((route, index) =>
-            route.protectedRoute ? (
+          {_routes.map((route, index) => {
+            if (route.isExternal) return "";
+            return route.protectedRoute ? (
               <ProtectedLoginRoute
                 key={index}
                 children={route.main}
@@ -113,8 +126,8 @@ const Routes = () => {
                 path={route.path}
                 children={route.main}
               />
-            )
-          )}
+            );
+          })}
         </Switch>
       </div>
     </Router>

@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 const TextInput = ({
   className,
   hasError,
+  clear,
   name,
   onChange,
   onEnter,
@@ -19,6 +20,7 @@ const TextInput = ({
     <label
       className={classNames(className, styles.input, {
         [styles.hasError]: hasError,
+        [styles.hasClear]: clear && value.length,
       })}
       htmlFor={name}
     >
@@ -31,6 +33,7 @@ const TextInput = ({
         onKeyPress={onKeyPress}
         {...otherProps}
       />
+      {clear && <div className={styles.clear} onClick={clear}></div>}
     </label>
   );
 };
@@ -41,6 +44,8 @@ TextInput.defaultProps = {
 
 TextInput.propTypes = {
   className: PropTypes.string,
+  clear: PropTypes.func,
+  hasError: PropTypes.bool,
   name: PropTypes.string,
   onChange: PropTypes.func,
   onEnter: PropTypes.func,

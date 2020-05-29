@@ -32,14 +32,20 @@ const Sidebar = ({ routes, toggle, setToggle }) => {
         {routes.map((route, index) =>
           route.sidebar ? (
             <li key={index}>
-              <NavLink
-                to={route.path}
-                exact
-                key={index}
-                activeClassName={styles.active}
-              >
-                {route.name}
-              </NavLink>
+              {route.isExternal ? (
+                <a href={route.path} target="_blank" rel="noopener noreferrer">
+                  {route.name}
+                </a>
+              ) : (
+                <NavLink
+                  to={route.path}
+                  exact
+                  key={index}
+                  activeClassName={styles.active}
+                >
+                  {route.name}
+                </NavLink>
+              )}
             </li>
           ) : (
             ""
